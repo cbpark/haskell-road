@@ -1,3 +1,10 @@
+--------------------------------------------------------------------------------
+-- |
+-- Module : HaskellRoad.GS
+--
+-- Chapter 1. Getting Started
+--
+--------------------------------------------------------------------------------
 module HaskellRoad.GS where
 
 import           Exercise.Chap1 (removeFst)
