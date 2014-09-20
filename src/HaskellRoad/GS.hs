@@ -16,9 +16,9 @@ ld :: Integer -> Integer
 ld = ldf 2
 
 ldf :: Integer -> Integer -> Integer
-ldf k n | divides k n = k
-        | k ^ 2 > n   = n
-        | otherwise   = ldf (k + 1) n
+ldf k n | k `divides` n = k
+        | k ^ 2 > n     = n
+        | otherwise     = ldf (k + 1) n
 
 prime0 :: Integer -> Bool
 prime0 n | n < 1     = error "not a positive integer"
