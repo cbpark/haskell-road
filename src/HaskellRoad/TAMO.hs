@@ -162,3 +162,28 @@ test9a = logEquiv3 (\p q r -> p && (q || r)) (\p q r -> (p && q) || (p && r))
 
 test9b :: Bool
 test9b = logEquiv3 (\p q r -> p || (q && r)) (\p q r -> (p || q) && (p || r))
+
+square1 :: Integer -> Integer
+square1 x = x ^ 2
+
+square2 :: Integer -> Integer
+square2 = \x -> x ^ 2
+
+m1 :: Integer -> Integer -> Integer
+m1 = \x -> \y -> x * y
+
+m2 :: Integer -> Integer -> Integer
+m2 = \x y -> x * y
+
+solveQdr :: (Double, Double, Double) -> (Double, Double)
+solveQdr = \(a, b, c) -> if a == 0
+                         then error "not quadratic"
+                         else let d = b ** 2 - 4 * a * c
+                              in if d < 0
+                                 then error "no real solutions"
+                                 else ((-b + sqrt d) / (2 * a),
+                                       (-b - sqrt d) / (2 * a))
+
+every, some :: [a] -> (a -> Bool) -> Bool
+every xs p = all p xs
+some  xs p = any p xs

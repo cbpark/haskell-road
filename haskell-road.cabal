@@ -15,6 +15,7 @@ cabal-version:       >=1.10
 library
   exposed-modules:     HaskellRoad.GS
                        HaskellRoad.TAMO
+                       HaskellRoad.TUOLP
                        Exercise.Chap1
                        Exercise.Chap2
   build-depends:       base >=4.6

@@ -52,3 +52,16 @@ contrad3 :: (Bool -> Bool -> Bool -> Bool) -> Bool
 contrad3 bf = and [not (bf p q r) | p <- [True,False]
                                   , q <- [True,False]
                                   , r <- [True,False]]
+
+-- | Exercise 2.51
+unique :: (a -> Bool) -> [a] -> Bool
+unique _ []     = False
+unique p (x:xs) = if p x then not (any p xs) else unique p xs
+
+-- | Exercise 2.52
+parity :: [Bool] -> Bool
+parity = foldr (/=) True
+
+-- | Exercise 2.53
+evenNR :: (a -> Bool) -> [a] -> Bool
+evenNR p = parity . map p
