@@ -2,7 +2,7 @@ name:                haskell-road
 version:             0.0.0.0
 synopsis:            Codes from The Haskell Road to Logic, Maths and Programming
 -- description:
-homepage:            http://github.com/cbpark/haskell-road
+homepage:            https://github.com/cbpark/haskell-road
 -- license:
 -- license-file:        LICENSE
 author:              Chan Beom Park
@@ -18,6 +18,7 @@ library
                        HaskellRoad.TUOLP
                        Exercise.Chap1
                        Exercise.Chap2
+                       Exercise.Chap3
   build-depends:       base >=4.6
   hs-source-dirs:      src
   default-language:    Haskell2010
