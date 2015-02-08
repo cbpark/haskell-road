@@ -16,6 +16,7 @@ library
   exposed-modules:     HaskellRoad.GS
                        HaskellRoad.TAMO
                        HaskellRoad.TUOLP
+                       HaskellRoad.STAL
                        Exercise.Chap1
                        Exercise.Chap2
                        Exercise.Chap3
