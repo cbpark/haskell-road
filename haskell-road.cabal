@@ -17,9 +17,11 @@ library
                        HaskellRoad.TAMO
                        HaskellRoad.TUOLP
                        HaskellRoad.STAL
+                       HaskellRoad.DB
                        Exercise.Chap1
                        Exercise.Chap2
                        Exercise.Chap3
+                       Exercise.Chap4
   build-depends:       base >=4.6
   hs-source-dirs:      src
   default-language:    Haskell2010
