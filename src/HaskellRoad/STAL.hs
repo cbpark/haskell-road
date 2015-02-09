@@ -171,3 +171,34 @@ q10 = (not . null) [x | ("Woody Allen", x) <- direct]
 
 q10' :: Bool
 q10' = directorP "Woody Allen"
+
+delete :: Eq a => a -> [a] -> [a]
+delete _ []                 = []
+delete x (y:ys) | x == y    = ys
+                | otherwise = y : delete x ys
+
+elem' :: Eq a => a -> [a] -> Bool
+elem' _ []                 = False
+elem' x (y:ys) | x == y    = True
+               | otherwise = elem' x ys
+
+union :: Eq a => [a] -> [a] -> [a]
+union []     ys = ys
+union (x:xs) ys = x : union xs (delete x ys)
+
+intersect :: Eq a => [a] -> [a] -> [a]
+intersect []     _              = []
+intersect (x:xs) s | x `elem` s = x : xs `intersect` s
+                   | otherwise  = xs `intersect` s
+
+addElem :: a -> [[a]] -> [[a]]
+addElem x = map (x:)
+
+powerList :: [a] -> [[a]]
+powerList []     = [[]]
+powerList (x:xs) = powerList xs ++ map (x:) (powerList xs)
+
+data S = Void deriving (Eq, Show)
+
+empty :: [S]
+empty = []
