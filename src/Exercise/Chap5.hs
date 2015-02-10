@@ -4,6 +4,8 @@ import           HaskellRoad.REL
 import           HaskellRoad.SetOrd
 
 -- | Exercise 5.52
+--
+-- restriction of a relation to a set.
 restrictR :: Ord a => Set a -> Rel a -> Rel a
 restrictR set = intersectSet (totalR set)
 
@@ -26,3 +28,8 @@ sclosR r = unionSet r (invR r)
 tclosR :: Ord a => Rel a -> Rel a
 tclosR r | transR r  = r
          | otherwise = tclosR (unionSet r (compR r r))
+
+-- | Exercise 5.56
+transClosure' :: [a] -> Rel' a -> Rel' a
+transClosure' xs r | transR' xs r = r
+                   | otherwise    = transClosure' xs (unionR' r (compR' xs r r))

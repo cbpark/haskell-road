@@ -7,6 +7,8 @@
 --------------------------------------------------------------------------------
 module HaskellRoad.REL where
 
+import           Prelude            hiding (curry, flip, uncurry)
+
 import           HaskellRoad.SetOrd
 
 divisors :: Integer -> [(Integer, Integer)]
@@ -67,10 +69,10 @@ irreflR (Set xs) r = all (not . inR r) [(x, x) | x <- xs]
 
 -- | checks symmetry
 symR :: Ord a => Rel a -> Bool
-symR (Set []) = True
-symR (Set ((x, y):pairs))
-  | x == y = symR (Set pairs)
-  | otherwise = (y, x) `inSet` Set pairs && symR (deleteSet (y, x) (Set pairs))
+symR (Set [])                         = True
+symR (Set ((x, y):pairs)) | x == y    = symR (Set pairs)
+                          | otherwise = (y, x) `inSet` Set pairs
+                                        && symR (deleteSet (y, x) (Set pairs))
 
 -- | checks transitivity.
 transR :: Ord a => Rel a -> Bool
@@ -94,3 +96,74 @@ repeatR :: Ord a => Rel a -> Int -> Rel a
 repeatR r n | n <  1    = error "argument < 1"
             | n == 1    = r
             | otherwise = compR r (repeatR r (n-1))
+
+divides :: Integer -> Integer -> Bool
+d `divides` n | d == 0    = error "divides: zero divisor"
+              | otherwise = n `rem` d == 0
+
+curry :: ((a, b) -> c) -> a -> b -> c
+curry f x y = f (x, y)
+
+uncurry :: (a -> b -> c) -> (a, b) -> c
+uncurry f p = f (fst p) (snd p)
+
+eq :: Eq a => (a, a) -> Bool
+eq = uncurry (==)
+
+lessEq :: Ord a => (a, a) -> Bool
+lessEq = uncurry (<=)
+
+inverse :: ((a, b) -> c) -> (b, a) -> c
+inverse f (x, y) = f (y, x)
+
+flip :: (a -> b -> c) -> b -> a -> c
+flip f x y = f y x
+
+type Rel' a = a -> a -> Bool
+
+emptyR' :: Rel' a
+emptyR' _ _ = False
+
+list2rel' :: Eq a => [(a, a)] -> Rel' a
+list2rel' xys x y = (x, y) `elem` xys
+
+idR' :: Eq a => [a] -> Rel' a
+idR' xs x y = x == y && x `elem` xs
+
+invR' :: Rel' a -> Rel' a
+invR' = flip
+
+inR' :: Rel' a -> (a, a) -> Bool
+inR' = uncurry
+
+reflR' :: [a] -> Rel' a -> Bool
+reflR' xs r = and [r x x | x <- xs]
+
+irreflR' :: [a] -> Rel' a -> Bool
+irreflR' xs r = and [not (r x x) | x <- xs]
+
+symR' :: [a] -> Rel' a -> Bool
+symR' xs r = and [not (r x y && not (r y x)) | x <- xs, y <- xs]
+
+transR' :: [a] -> Rel' a -> Bool
+transR' xs r = and [not (r x y && r y z && not (r x z)) | x <- xs, y <- xs, z <- xs]
+
+unionR' :: Rel' a -> Rel' a -> Rel' a
+unionR' r s x y = r x y || s x y
+
+intersR' :: Rel' a -> Rel' a -> Rel' a
+intersR' r s x y = r x y && s x y
+
+reflClosure' :: Eq a => Rel' a -> Rel' a
+reflClosure' r = unionR' r (==)
+
+symClosure' :: Rel' a -> Rel' a
+symClosure' r = unionR' r (invR' r)
+
+compR' :: [a] -> Rel' a -> Rel' a -> Rel' a
+compR' xs r s x y = or [r x z && s z y | z <- xs]
+
+repeatR' :: [a] -> Rel' a -> Int -> Rel' a
+repeatR' xs r n | n <  1    = error "argument < 1"
+                | n == 1    = r
+                | otherwise = compR' xs r (repeatR' xs r (n - 1))
