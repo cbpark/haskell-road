@@ -1,5 +1,6 @@
 module Exercise.Chap4 where
 
+import           HaskellRoad.SetEq
 import           HaskellRoad.STAL
 
 -- | Exercise 4.47
@@ -39,3 +40,20 @@ genIntersect :: Eq a => [[a]] -> [a]
 genIntersect []       = error "undefined on empty list of lists"
 genIntersect [xs]     = xs
 genIntersect (xs:xss) = xs `intersect` genIntersect xss
+
+-- | Exercise 4.54
+unionSet :: Eq a => Set a -> Set a -> Set a
+unionSet (Set [])     set = set
+unionSet (Set (x:xs)) set = insertSet x (unionSet (Set xs) (deleteSet x set))
+
+-- | Exercise 4.54
+intersectSet :: Eq a => Set a -> Set a -> Set a
+intersectSet (Set [])     _   = Set []
+intersectSet (Set (x:xs)) set
+  | x `inSet` set = insertSet x (intersectSet (Set xs) set)
+  | otherwise     = intersectSet (Set xs) set
+
+-- | Exercise 4.54
+differenceSet :: Eq a => Set a -> Set a -> Set a
+differenceSet set (Set [])     = set
+differenceSet set (Set (x:xs)) = differenceSet (deleteSet x set) (Set xs)

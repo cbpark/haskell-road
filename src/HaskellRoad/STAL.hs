@@ -22,11 +22,11 @@ evens2 :: [Integer]
 evens2 = [2*n | n <- naturals]
 
 smallSquares1 :: [Integer]
-smallSquares1 = [n^(2 :: Integer) | n <- [0..999]]
+smallSquares1 = [n^2 | n <- [0..999]]
 
 -- | Unlike 'smallsquares1', this never terminates.
 smallSquares2 :: [Integer]
-smallSquares2 = [n^(2 :: Integer) | n <- naturals, n < 1000]
+smallSquares2 = [n^2 | n <- naturals, n < 1000]
 
 run :: Integer -> [Integer]
 run n | n < 1  = error "argument not positive"
