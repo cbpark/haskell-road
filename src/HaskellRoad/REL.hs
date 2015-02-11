@@ -167,3 +167,16 @@ repeatR' :: [a] -> Rel' a -> Int -> Rel' a
 repeatR' xs r n | n <  1    = error "argument < 1"
                 | n == 1    = r
                 | otherwise = compR' xs r (repeatR' xs r (n - 1))
+
+equivalenceR :: Ord a => Set a -> Rel a -> Bool
+equivalenceR set r = reflR set r && symR r && transR r
+
+equivalenceR' :: [a] -> Rel' a -> Bool
+equivalenceR' xs r = reflR' xs r && symR' xs r && transR' xs r
+
+-- | module relation.
+modulo :: Integer -> Integer -> Integer -> Bool
+modulo n x y = n `divides` (x - y)
+
+equalSize :: [a] -> [b] -> Bool
+equalSize list1 list2 = length list1 == length list2
