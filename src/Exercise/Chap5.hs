@@ -1,8 +1,9 @@
 module Exercise.Chap5 where
 
-import HaskellRoad.STAL (intersect, union)
+import           Exercise.Chap4     ((\\))
 import           HaskellRoad.REL
 import           HaskellRoad.SetOrd
+import           HaskellRoad.STAL   (intersect, union)
 
 -- | Exercise 5.52
 --
@@ -59,3 +60,23 @@ listPartition xs xss = all (`elem` xs) (concat xss) && all (`elem` concat xss) x
         listPartition' (xs':xss') domain
           | null (xs' `intersect` domain) = listPartition' xss' (xs' `union` domain)
           | otherwise                     = False
+
+-- | Exercise 5.110
+listpart2equiv :: Ord a => [a] -> [[a]] -> Rel a
+listpart2equiv domain xss
+  | not (listPartition domain xss) = error "not a list partition"
+  | otherwise                      = list2set $ concatMap f xss
+  where f xs = [(x, y) | x <- xs, y <- xs]
+
+-- | Exercise 5.112
+equiv2listpart :: Ord a => Set a -> Rel a -> [[a]]
+equiv2listpart s@(Set xs) r
+  | not (equivalenceR s r) = error "not an equivalence relation"
+  | otherwise              = listpart r xs
+  where listpart _  []      = []
+        listpart r' (x:xs') = xclass : listpart r' (xs' \\ xclass)
+          where xclass = x : [y | y <- xs', (x, y) `inSet` r']
+
+-- | Exercise 5.113
+equiv2part :: Ord a => Set a -> Rel a -> Set (Set a)
+equiv2part set r = list2set $ map list2set (equiv2listpart set r)

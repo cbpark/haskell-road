@@ -17,16 +17,18 @@ library
                        HaskellRoad.TAMO
                        HaskellRoad.TUOLP
                        HaskellRoad.STAL
-                       HaskellRoad.SetEq
-                       HaskellRoad.Hierarchy
                        HaskellRoad.REL
-                       HaskellRoad.SetOrd
+                       HaskellRoad.FCT
                        Exercise.Chap1
                        Exercise.Chap2
                        Exercise.Chap3
                        Exercise.Chap4
                        Exercise.Chap5
+                       Exercise.Chap6
   other-modules:       HaskellRoad.DB
+                       HaskellRoad.SetEq
+                       HaskellRoad.Hierarchy
+                       HaskellRoad.SetOrd
   build-depends:       base >=4.6
   hs-source-dirs:      src
   default-language:    Haskell2010

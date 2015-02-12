@@ -23,11 +23,11 @@ ex450 :: [String]
 ex450 = [x | (x, y) <- release, y > "1997", (not . actP) ("William Hurt", x)]
 
 -- | Exercise 4.51
-(//) :: Eq a => [a] -> [a] -> [a]
-[]     // _                = []
-xs     // []               = xs
-(x:xs) // ys | x `elem` ys = xs // ys
-             | otherwise   = x : xs // ys
+(\\) :: Eq a => [a] -> [a] -> [a]
+[]     \\ _                = []
+xs     \\ []               = xs
+(x:xs) \\ ys | x `elem` ys = xs \\ ys
+             | otherwise   = x : xs \\ ys
 
 -- | Exercise 4.53
 genUnion :: Eq a => [[a]] -> [a]

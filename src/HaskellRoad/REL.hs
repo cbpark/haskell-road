@@ -174,9 +174,33 @@ equivalenceR set r = reflR set r && symR r && transR r
 equivalenceR' :: [a] -> Rel' a -> Bool
 equivalenceR' xs r = reflR' xs r && symR' xs r && transR' xs r
 
--- | module relation.
+-- | modulo relation.
 modulo :: Integer -> Integer -> Integer -> Bool
 modulo n x y = n `divides` (x - y)
 
 equalSize :: [a] -> [b] -> Bool
 equalSize list1 list2 = length list1 == length list2
+
+type Part = [Int]
+type CmprPart = (Int, Part)
+
+expand :: CmprPart -> Part
+expand (0, p) = p
+expand (n, p) = 1 : expand (n - 1, p)
+
+nextpartition :: CmprPart -> CmprPart
+nextpartition (k, [])   = (k, [])
+nextpartition (k, x:xs) = pack (x - 1) (k + x, xs)
+
+pack :: Int -> CmprPart -> CmprPart
+pack 1 (m, xs) = (m, xs)
+pack k (m, xs) = if k > m then pack (k - 1) (m, xs) else pack k (m - k, k:xs)
+
+generatePs :: CmprPart -> [Part]
+generatePs p@(_, []) = [expand p]
+generatePs p         = expand p : generatePs (nextpartition p)
+
+part :: Int -> [Part]
+part n | n <  1    = error "part: argument <= 0"
+       | n == 1    = [[1]]
+       | otherwise = generatePs (0, [n])
