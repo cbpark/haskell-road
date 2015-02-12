@@ -5,7 +5,7 @@
 --------------------------------------------------------------------------------
 module HaskellRoad.Hierarchy where
 
-import HaskellRoad.SetEq (Set (..), powerSet)
+import           HaskellRoad.SetEq (Set (..), powerSet)
 
 data S = Void deriving (Eq, Show)
 

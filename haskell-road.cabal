@@ -19,12 +19,14 @@ library
                        HaskellRoad.STAL
                        HaskellRoad.REL
                        HaskellRoad.FCT
+                       HaskellRoad.IAR
                        Exercise.Chap1
                        Exercise.Chap2
                        Exercise.Chap3
                        Exercise.Chap4
                        Exercise.Chap5
                        Exercise.Chap6
+                       Exercise.Chap7
   other-modules:       HaskellRoad.DB
                        HaskellRoad.SetEq
                        HaskellRoad.Hierarchy
