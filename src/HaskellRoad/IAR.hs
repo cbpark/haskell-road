@@ -164,22 +164,31 @@ rev = foldl (\xs x -> x:xs) []
 rev' :: [a] -> [a]
 rev' = foldr (\x xs -> xs ++ [x]) []
 
-data Peg = A | B | C
-type Tower = ([Int], [Int], [Int])
+data Form = P Int | Conj Form Form | Disj Form Form | Neg Form
 
-move :: Peg -> Peg -> Tower -> Tower
-move A B (x:xs, ys,   zs  ) = (xs,   x:ys, zs  )
-move B A (xs,   y:ys, zs  ) = (y:xs, ys,   zs  )
-move A C (x:xs, ys,   zs  ) = (xs,   ys,   x:zs)
-move C A (xs,   ys,   z:zs) = (z:xs, ys,   zs  )
-move B C (xs,   y:ys, zs  ) = (xs,   ys,   y:zs)
-move C B (xs,   ys,   z:zs) = (xs,   z:ys, zs  )
+instance Show Form where
+  show (P i)        = 'P' : show i
+  show (Conj f1 f2) = "(" ++ show f1 ++ " & " ++ show f2 ++ ")"
+  show (Disj f1 f2) = "(" ++ show f1 ++ " v " ++ show f2 ++ ")"
+  show (Neg f)      = "~" ++ show f
 
-transfer :: Peg -> Peg -> Peg -> Int -> Tower -> [Tower]
-transfer _ _ _ 0 tower = [tower]
-transfer p q r n tower = transfer p r q (n-1) tower
-                         ++ transfer r q p (n-1) (move p q tower')
-  where tower' = last $ transfer p r q (n-1) tower
+-- |
+-- >>> subforms (Neg (Disj (P 1) (Neg (P 2))))
+-- [~(P1 v ~P2),(P1 v ~P2),P1,~P2,P2]
+subforms :: Form -> [Form]
+subforms (P n)        = [P n]
+subforms (Conj f1 f2) = Conj f1 f2 : (subforms f1 ++ subforms f2)
+subforms (Disj f1 f2) = Disj f1 f2 : (subforms f1 ++ subforms f2)
+subforms (Neg f)      = Neg f : subforms f
 
-hanoi :: Int -> [Tower]
-hanoi n = transfer A C B n ([1..n], [], [])
+ccount :: Form -> Int
+ccount (P _)        = 0
+ccount (Conj f1 f2) = 1 + ccount f1 + ccount f2
+ccount (Disj f1 f2) = 1 + ccount f1 + ccount f2
+ccount (Neg f)      = 1 + ccount f
+
+acount :: Form -> Int
+acount (P _)        = 1
+acount (Conj f1 f2) = acount f1 + acount f2
+acount (Disj f1 f2) = acount f1 + acount f2
+acount (Neg f)      = acount f

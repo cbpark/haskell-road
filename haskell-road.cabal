@@ -20,6 +20,7 @@ library
                        HaskellRoad.REL
                        HaskellRoad.FCT
                        HaskellRoad.IAR
+                       HaskellRoad.WWN
                        Exercise.Chap1
                        Exercise.Chap2
                        Exercise.Chap3
