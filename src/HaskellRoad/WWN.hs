@@ -6,3 +6,5 @@
 --
 --------------------------------------------------------------------------------
 module HaskellRoad.WWN where
+
+import           HaskellRoad.Nats
