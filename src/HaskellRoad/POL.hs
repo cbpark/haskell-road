@@ -93,11 +93,16 @@ backsubst rs = backsubst' rs []
                 p = c % a
                 rs' = eliminate p (init rs0)
 
--- |
--- >>> [n^3 + 5 * n^2 - 5 * n - 12 | n <- [0..9]]
--- [-12,-11,6,45,112,213,354,541,780,1077]
--- >>> map (p2fct [-12,-5,5,1]) [0..9]
--- [-12,-11,6,45,112,213,354,541,780,1077]
-p2fct :: Num a => [a] -> a -> a
-p2fct [] _     = 0
-p2fct (a:as) x = a + (x * p2fct as x)
+choose :: Integer -> Integer -> Integer
+choose n k = product [(n-k+1)..n] `div` product [1..k]
+
+choose' :: Integer -> Integer -> Integer
+choose' _ 0             = 1
+choose' n k | n <  k    = 0
+            | n == k    = 1
+            | otherwise = choose' (n-1) (k-1) + choose' (n-1) k
+
+binom :: Integer -> Integer -> Integer
+binom _ 0             = 1
+binom n k | n < k     = 0
+          | otherwise = n * binom (n-1) (k-1) `div` k
