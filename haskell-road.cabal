@@ -21,6 +21,7 @@ library
                        HaskellRoad.FCT
                        HaskellRoad.IAR
                        HaskellRoad.WWN
+                       HaskellRoad.POL
                        Exercise.Chap1
                        Exercise.Chap2
                        Exercise.Chap3
@@ -28,6 +29,7 @@ library
                        Exercise.Chap5
                        Exercise.Chap6
                        Exercise.Chap7
+                       Exercise.Chap8
   other-modules:       HaskellRoad.DB
                        HaskellRoad.SetEq
                        HaskellRoad.Hierarchy

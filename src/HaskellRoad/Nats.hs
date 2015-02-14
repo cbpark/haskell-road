@@ -5,6 +5,8 @@
 --------------------------------------------------------------------------------
 module HaskellRoad.Nats where
 
+import           Data.Char (intToDigit)
+
 data Natural = Z | S Natural deriving (Eq, Show)
 
 instance Ord Natural where
@@ -47,5 +49,17 @@ instance Integral Natural where
     where (q, r) = (n-d) `quotRem` d
   toInteger = foldn succ 0
 
-toInt :: Natural -> Int
+toInt :: Integral a => a -> Int
 toInt = fromIntegral
+
+binary :: Integral a => a -> [Int]
+binary = reverse . bits
+  where bits 0 = [0]
+        bits 1 = [1]
+        bits n = toInt (n `rem` 2) : bits (n `quot` 2)
+
+showDigits :: [Int] -> String
+showDigits = map intToDigit
+
+bin :: Integral a => a -> String
+bin = showDigits . binary
