@@ -7,7 +7,10 @@
 --------------------------------------------------------------------------------
 module HaskellRoad.COR where
 
-import           System.Random (Random (..), mkStdGen)
+import           HaskellRoad.Polynomials
+import           HaskellRoad.PowerSeries
+
+import           System.Random           (Random (..), mkStdGen)
 
 default (Integer, Rational, Double)
 
@@ -91,3 +94,20 @@ user acts ~(r:s:p:resps) = acts ++ user (proc [r,s,p]) resps
 
 proc :: [String] -> [Int]
 proc ["coin", "coin", "beer"] = [0,0,1]
+
+{-
+undefined :: a
+undefined | False = undefined
+-}
+
+approx :: Integer -> [a] -> [a]
+approx _ []     = []
+approx n (x:xs) = x : approx (n-1) xs
+
+o2e :: Num a => [a]  -> [a]
+o2e []     = []
+o2e (f:fs) = f : o2e (deriv (f:fs))
+
+e2o :: (Ord a, Fractional a) => [a] -> [a]
+e2o []     = []
+e2o (f:fs) = [f] + (int . e2o) fs

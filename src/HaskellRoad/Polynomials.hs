@@ -1,5 +1,7 @@
 module HaskellRoad.Polynomials where
 
+default (Integer, Rational, Double)
+
 infixl 7 .*
 (.*) :: Num a => a -> [a] -> [a]
 _ .* []     = []
