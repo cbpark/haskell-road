@@ -7,6 +7,8 @@
 --------------------------------------------------------------------------------
 module HaskellRoad.COR where
 
+import           System.Random (Random (..), mkStdGen)
+
 default (Integer, Rational, Double)
 
 ones :: [Integer]
@@ -44,3 +46,48 @@ sieve' (n:xs) = n : sieve' (filter (\m -> m `rem` n /= 0) xs)
 
 primes' :: [Integer]
 primes' = sieve' [2..]
+
+randomInts :: Int -> Int -> [Int]
+randomInts bound seed = tail $ randomRs (0, bound) (mkStdGen seed)
+
+type Process = [Int] -> [String]
+
+start :: Process -> Int -> Int -> [String]
+start process bound seed = process (randomInts bound seed)
+
+clock :: Process
+clock (0:xs) = "tick" : clock xs
+clock (1:_)  = ["crack"]
+
+vending, vending1, vending2, vending3 :: Process
+vending  (0:xs) = "coin"      : vending1 xs
+vending  (1:xs) =               vending  xs
+vending1 (0:xs) = "coin"      : vending2 xs
+vending1 (1:xs) = "water"     : vending  xs
+vending2 (0:xs) = "coin"      : vending3 xs
+vending2 (1:xs) = "beer"      : vending  xs
+vending3 (0:xs) = "moneyback" : vending  xs
+vending3 (1:xs) =               vending3 xs
+
+ptd :: Process
+ptd = ptd0 0
+
+ptd0 :: Int -> Process
+ptd0 0 (0:xs) = ptd0 0 xs
+ptd0 i (0:xs) = ("return " ++ show i ++ " euro") : ptd0 0 xs
+ptd0 i (1:xs) = "1 euro" : ptd0 (i+1) xs
+ptd0 i (2:xs) = "2 euro" : ptd0 (i+2) xs
+ptd0 0 (3:xs) = ptd0 0 xs
+ptd0 i (3:xs) = ("ticket " ++ show (i * 20) ++ " min") : ptd0 0 xs
+
+actions :: [Int]
+actions = user [0,0,1] responses
+
+responses :: [String]
+responses = vending actions
+
+user :: [Int] -> [String] -> [Int]
+user acts ~(r:s:p:resps) = acts ++ user (proc [r,s,p]) resps
+
+proc :: [String] -> [Int]
+proc ["coin", "coin", "beer"] = [0,0,1]
